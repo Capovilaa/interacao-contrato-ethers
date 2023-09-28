@@ -1,0 +1,49 @@
+Até agora o que eu vi de deploy com a ajuda do Hard Hat:
+
+Hard Hat é uma biblioteca que permite se comunicar com a WEB 3.0, com essa ajuda
+é possível fazer o deploy de contratos, mas ainda é necessário ter o contrato em 
+solidiy criado para que seja possível criar os arquivos abi e bin. As funções que 
+forem criadas em js devem ser async, pois tem que esperar a tarefa ser finalizada
+para prosseguir.
+
+Fluxo básico:
+IMPORT
+- Importar as bibliotecas necessárias: ethers para trabalhar com as funções dos
+contratos, fs para trabalhar com arquivos e dotenv para acessar valores sensíveis
+do arquivo .env.
+
+HOST E WALLET
+- Ter um host para a blockchain, se for local pode ser usado o Ganache, que simula
+o amiente com as mesmas funções reais, porém tendo que estar rodando o tempo todo.
+Se for querer algo online pode ser usado o Alchemy.
+
+DEFINIR HOST E WALLET
+- Definir a carteira e o host, isso pode ser feito com mais segurança usando o 
+arquivo .env e private keys para serem acessadas.
+
+DEPLOY
+- Realizar a conexão de fato, passando host, abi e wallet. Importante que para
+cada criação de contrato ou transações que realizem alterações no estado, colocar
+um wait a mais por segurança, para garantir que essas foram realizadas com sucesso.
+
+ACESSO
+- Caso queira acessar as funções do contrato (abi), basta fazer contrato.nomeFuncao(),
+parâmetros também podem ser passados.
+
+FUNÇÕES ASYNC
+- Até então as funções que são chamadas que interagem com os contratos inteligentes,
+foram chamadas da seguinte forma:
+
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error)
+        process.exit(1)
+    })
+
+GERAR ARQUIVOS ABI E BIN
+- O Script que compila o contrato foi armazenado no package.json por ser bem longa,
+esse comando cria os arquivos necessários para que o js possa ler. O comando é o seguinte:
+
+yarn solcjs --bin --abi --include-path node_modules/ --base-path . -o . nomeArquivo.sol
+
